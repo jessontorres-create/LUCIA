@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CC & LUCIA - Supabase Setup Wizard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e3a5f;
+            --accent-color: #ff6b35;
+            --success-color: #10b981;
+            --bg-color: #f8fafc;
+        }
+        body {
+            background: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .setup-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+        }
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            transition: all 0.3s;
+        }
+        .step-dot.active {
+            background: var(--accent-color);
+            transform: scale(1.2);
+        }
+        .step-dot.completed {
+            background: var(--success-color);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border: none;
+            padding: 12px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+        }
+        .btn-secondary {
+            background: #f1f5f9;
+            border: none;
+            color: #475569;
+            padding: 12px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .form-control {
+            border-radius: 12px;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+        }
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 12px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+        .success-check {
+            width: 80px;
+            height: 80px;
+            background: var(--success-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+        .success-check i {
+            font-size: 2.5rem;
+            color: white;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        .feature-list i {
+            color: var(--success-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-card">
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step-dot active" id="dot-1"></div>
+            <div class="step-dot" id="dot-2"></div>
+            <div class="step-dot" id="dot-3"></div>
+            <div class="step-dot" id="dot-4"></div>
+        </div>
+
+        <!-- Step 1: Welcome -->
+        <div class="step active" id="step-1">
+            <div class="text-center mb-4">
+                <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                    <i class="fas fa-utensils" style="font-size: 2.5rem; color: white;"></i>
+                </div>
+                <h2 class="fw-bold mb-2">Welcome to CC & LUCIA</h2>
+                <p class="text-muted">Let's set up Supabase for real-time synchronization</p>
+            </div>
+
+            <ul class="feature-list mb-4">
+                <li><i class="fas fa-check-circle"></i> Secure user authentication</li>
+                <li><i class="fas fa-check-circle"></i> Real-time stock updates</li>
+                <li><i class="fas fa-check-circle"></i> Instant order notifications</li>
+                <li><i class="fas fa-check-circle"></i> Live messaging between devices</li>
+            </ul>
+
+            <div class="d-grid gap-2">
+                <button onclick="nextStep()" class="btn btn-primary">Get Started</button>
+                <a href="index.html" class="btn btn-secondary">Skip Setup</a>
+            </div>
+        </div>
+
+        <!-- Step 2: Create Supabase Account -->
+        <div class="step" id="step-2">
+            <h4 class="fw-bold mb-3"><i class="fas fa-cloud me-2 text-primary"></i>Step 1: Create Supabase Account</h4>
+            
+            <div class="mb-4">
+                <p class="text-muted">First, you need to create a free Supabase account:</p>
+                <ol class="text-muted">
+                    <li>Go to <a href="https://supabase.com" target="_blank" class="text-decoration-none fw-semibold">supabase.com</a></li>
+                    <li>Click "Start your project"</li>
+                    <li>Create a new project (e.g., "cc-lucia-kitchen")</li>
+                    <li>Wait for the project to be created</li>
+                </ol>
+            </div>
+
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Tip:</strong> The free tier includes everything you need for this app!
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button onclick="prevStep()" class="btn btn-secondary">Back</button>
+                <button onclick="nextStep()" class="btn btn-primary">I've Created My Account</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Configure Database -->
+        <div class="step" id="step-3">
+            <h4 class="fw-bold mb-3"><i class="fas fa-database me-2 text-primary"></i>Step 2: Set Up Database</h4>
+            
+            <div class="mb-4">
+                <p class="text-muted">Run this SQL in your Supabase SQL Editor:</p>
+                <div class="code-block mb-3">
+-- Enable extensions
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Create profiles table
+CREATE TABLE profiles (
+    id UUID PRIMARY KEY REFERENCES auth.users(id),
+    email TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL,
+    role TEXT NOT NULL,
+    unit TEXT,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Enable RLS
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+                </div>
+                <p class="small text-muted">For the complete schema, see <code>supabase_schema.sql</code></p>
+            </div>
+
+            <div class="mb-3">
+                <p class="text-muted fw-semibold">Then enable Realtime:</p>
+                <ol class="text-muted">
+                    <li>Go to <strong>Database → Replication</strong></li>
+                    <li>Enable <strong>Realtime</strong> for all tables</li>
+                </ol>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button onclick="prevStep()" class="btn btn-secondary">Back</button>
+                <button onclick="nextStep()" class="btn btn-primary">Database Configured</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Enter Credentials -->
+        <div class="step" id="step-4">
+            <h4 class="fw-bold mb-3"><i class="fas fa-key me-2 text-primary"></i>Step 3: Enter Credentials</h4>
+            
+            <div class="mb-4">
+                <p class="text-muted">Find these in your Supabase project:</p>
+                <ol class="text-muted mb-3">
+                    <li>Go to <strong>Project Settings → API</strong></li>
+                    <li>Copy the values below</li>
+                </ol>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Supabase URL</label>
+                <input type="text" class="form-control" id="setup-url" placeholder="https://your-project.supabase.co">
+                <small class="text-muted">Your project URL</small>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Anon/Public Key</label>
+                <input type="password" class="form-control" id="setup-key" placeholder="eyJhbGciOiJIUzI1NiIs...">
+                <small class="text-muted">Found in Project Settings → API</small>
+            </div>
+
+            <div id="setup-error" class="alert alert-danger d-none">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span id="error-message">Please fill in all fields</span>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button onclick="prevStep()" class="btn btn-secondary">Back</button>
+                <button onclick="saveCredentials()" class="btn btn-primary">Save & Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Success -->
+        <div class="step" id="step-5">
+            <div class="text-center">
+                <div class="success-check">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 class="fw-bold mb-2">Setup Complete!</h3>
+                <p class="text-muted mb-4">Your app is now configured for real-time synchronization.</p>
+
+                <div class="alert alert-success mb-4">
+                    <i class="fas fa-bolt me-2"></i>
+                    <strong>Real-time features enabled:</strong>
+                    <ul class="list-unstyled mt-2 mb-0">
+                        <li>✓ Live stock updates</li>
+                        <li>✓ Instant order notifications</li>
+                        <li>✓ Real-time messaging</li>
+                    </ul>
+                </div>
+
+                <a href="index.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-rocket me-2"></i>Launch App
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentStep = 1;
+        const totalSteps = 5;
+
+        function nextStep() {
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`dot-${currentStep}`).classList.remove('active');
+            document.getElementById(`dot-${currentStep}`).classList.add('completed');
+            
+            currentStep++;
+            
+            if (currentStep <= totalSteps) {
+                document.getElementById(`step-${currentStep}`).classList.add('active');
+                if (currentStep < totalSteps) {
+                    document.getElementById(`dot-${currentStep}`).classList.add('active');
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step-${currentStep}`).classList.remove('active');
+                if (currentStep < totalSteps) {
+                    document.getElementById(`dot-${currentStep}`).classList.remove('active');
+                }
+                
+                currentStep--;
+                
+                document.getElementById(`step-${currentStep}`).classList.add('active');
+                document.getElementById(`dot-${currentStep}`).classList.remove('completed');
+                document.getElementById(`dot-${currentStep}`).classList.add('active');
+            }
+        }
+
+        function saveCredentials() {
+            const url = document.getElementById('setup-url').value.trim();
+            const key = document.getElementById('setup-key').value.trim();
+            const errorDiv = document.getElementById('setup-error');
+            const errorMsg = document.getElementById('error-message');
+
+            if (!url || !key) {
+                errorMsg.textContent = 'Please fill in all fields';
+                errorDiv.classList.remove('d-none');
+                return;
+            }
+
+            if (!url.startsWith('https://') || !url.includes('.supabase.co')) {
+                errorMsg.textContent = 'Please enter a valid Supabase URL';
+                errorDiv.classList.remove('d-none');
+                return;
+            }
+
+            if (!key.startsWith('eyJ')) {
+                errorMsg.textContent = 'Please enter a valid anon key';
+                errorDiv.classList.remove('d-none');
+                return;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('supabase_url', url);
+            localStorage.setItem('supabase_key', key);
+
+            errorDiv.classList.add('d-none');
+            nextStep();
+        }
+
+        // Check if already configured
+        window.addEventListener('load', () => {
+            const savedUrl = localStorage.getItem('supabase_url');
+            const savedKey = localStorage.getItem('supabase_key');
+            
+            if (savedUrl && savedKey) {
+                // Skip to success
+                currentStep = 1;
+                for (let i = 1; i < 5; i++) {
+                    document.getElementById(`dot-${i}`).classList.add('completed');
+                }
+                document.getElementById('step-1').classList.remove('active');
+                document.getElementById('step-5').classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
